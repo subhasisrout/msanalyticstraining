@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "suroutTrainingAdf"
 		},
+		"BlobMetadataSqlConnection_connectionString": {
+			"value": ""
+		},
 		"trainingKVConnection_properties_typeProperties_baseUrl": {
 			"value": "https://surouttrainingkv.vault.azure.net/"
 		}

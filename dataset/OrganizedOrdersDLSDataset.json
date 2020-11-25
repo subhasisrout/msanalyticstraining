@@ -1,0 +1,58 @@
+{
+	"name": "OrganizedOrdersDLSDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OrganizedDLSConnection",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"fileSystemName": {
+				"type": "string"
+			},
+			"folder": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "orderid",
+				"type": "INT32"
+			},
+			{
+				"name": "orderdate",
+				"type": "UTF8"
+			},
+			{
+				"name": "customer",
+				"type": "INT32"
+			},
+			{
+				"name": "product",
+				"type": "INT32"
+			},
+			{
+				"name": "units",
+				"type": "INT32"
+			},
+			{
+				"name": "billingaddress",
+				"type": "UTF8"
+			},
+			{
+				"name": "remarks",
+				"type": "UTF8"
+			}
+		]
+	}
+}

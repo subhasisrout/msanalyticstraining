@@ -72,6 +72,59 @@
 								"referenceName": "DLSTargetProviderFunction",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "Copy blob storage to DLS",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Prepare DLS Target Info",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "OrdersBlobStorageDataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"containerName": {
+											"value": "@activity('Prepare DLS Target Info').output.containerName",
+											"type": "Expression"
+										},
+										"folder": {
+											"value": "@activity('Prepare DLS Target Info').output.folder",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@activity('Prepare DLS Target Info').output.fileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}

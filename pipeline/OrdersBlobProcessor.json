@@ -103,7 +103,24 @@
 										"type": "DelimitedTextReadSettings"
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -120,6 +137,23 @@
 										},
 										"fileName": {
 											"value": "@activity('Prepare DLS Target Info').output.blobName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "OrganizedOrdersDLSDataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileSystemName": "organized-data",
+										"folder": {
+											"value": "@activity('Prepare DLS Target Info').output.targetOrganizedFullPath",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@activity('Prepare DLS Target Info').output.targetOrganizedFileName",
 											"type": "Expression"
 										}
 									}

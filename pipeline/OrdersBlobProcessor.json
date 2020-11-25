@@ -1,0 +1,35 @@
+{
+	"name": "OrdersBlobProcessor",
+	"properties": {
+		"activities": [
+			{
+				"name": "LoadProcessableBlobs",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[uspGetProcessableBlobs]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "BlobMetadataDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"concurrency": 1,
+		"annotations": []
+	}
+}

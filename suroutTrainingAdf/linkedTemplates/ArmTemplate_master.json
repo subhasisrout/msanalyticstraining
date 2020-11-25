@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'OrganizedDLSConnection'"
 		},
+		"OrdersBlobStorageConnection_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OrdersBlobStorageConnection'"
+		},
 		"trainingKVConnection_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://surouttrainingkv.vault.azure.net/"
@@ -56,6 +60,9 @@
 					},
 					"OrganizedDLSConnection_accountKey": {
 						"value": "[parameters('OrganizedDLSConnection_accountKey')]"
+					},
+					"OrdersBlobStorageConnection_connectionString": {
+						"value": "[parameters('OrdersBlobStorageConnection_connectionString')]"
 					},
 					"BlobMetadataSqlConnection_connectionString": {
 						"value": "[parameters('BlobMetadataSqlConnection_connectionString')]"

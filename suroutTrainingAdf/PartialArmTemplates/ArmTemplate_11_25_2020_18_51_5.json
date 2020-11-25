@@ -6,333 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "suroutTrainingAdf"
-		},
-		"OrganizedDLSConnection_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'OrganizedDLSConnection'"
-		},
-		"OrdersBlobStorageConnection_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'OrdersBlobStorageConnection'"
-		},
-		"BlobMetadataSqlConnection_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'BlobMetadataSqlConnection'"
-		},
-		"trainingKVConnection_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://surouttrainingkv.vault.azure.net/"
-		},
-		"OrganizedDLSConnection_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://surouttrainingdls.dfs.core.windows.net"
-		},
-		"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://dlstargetprovider.azurewebsites.net"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/trainingKVConnection')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('trainingKVConnection_properties_typeProperties_baseUrl')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OrganizedDLSConnection')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('OrganizedDLSConnection_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('OrganizedDLSConnection_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OrdersBlobStorageConnection')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('OrdersBlobStorageConnection_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BlobMetadataSqlConnection')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('BlobMetadataSqlConnection_connectionString')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "trainingKVConnection",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "sqlpassword"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/trainingKVConnection')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DLSTargetProviderFunction')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('DLSTargetProviderFunction_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "trainingKVConnection",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "functionkey"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/trainingKVConnection')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OrganizedOrdersDLSDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "OrganizedDLSConnection",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"fileSystemName": {
-						"type": "string"
-					},
-					"folder": {
-						"type": "string"
-					},
-					"fileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().fileName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().fileSystemName",
-							"type": "Expression"
-						}
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "orderid",
-						"type": "INT32"
-					},
-					{
-						"name": "orderdate",
-						"type": "UTF8"
-					},
-					{
-						"name": "customer",
-						"type": "INT32"
-					},
-					{
-						"name": "product",
-						"type": "INT32"
-					},
-					{
-						"name": "units",
-						"type": "INT32"
-					},
-					{
-						"name": "billingaddress",
-						"type": "UTF8"
-					},
-					{
-						"name": "remarks",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/OrganizedDLSConnection')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OrdersBlobStorageDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "OrdersBlobStorageConnection",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"containerName": {
-						"type": "string"
-					},
-					"folder": {
-						"type": "string"
-					},
-					"fileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().fileName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().containerName",
-							"type": "Expression"
-						}
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/OrdersBlobStorageConnection')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BlobMetadataDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobMetadataSqlConnection",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "RecordId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "RecordDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "BlobId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "BlobName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DisplayName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Path",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastModified",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Size",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "MediaType",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IsFolder",
-						"type": "bit"
-					},
-					{
-						"name": "ETag",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FileLocator",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProcessStatus",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DLSTargetLocation",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "BlobMetadata"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobMetadataSqlConnection')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/OrdersBlobProcessor')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -360,8 +39,7 @@
 							},
 							"dataset": {
 								"referenceName": "BlobMetadataDataset",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"firstRowOnly": false
 						}
@@ -635,12 +313,55 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/BlobMetadataDataset')]",
-				"[concat(variables('factoryId'), '/linkedServices/DLSTargetProviderFunction')]",
-				"[concat(variables('factoryId'), '/datasets/OrdersBlobStorageDataset')]",
-				"[concat(variables('factoryId'), '/datasets/OrganizedOrdersDLSDataset')]",
-				"[concat(variables('factoryId'), '/linkedServices/BlobMetadataSqlConnection')]"
+				"[concat(variables('factoryId'), '/datasets/OrdersBlobStorageDataset')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OrdersBlobStorageDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OrdersBlobStorageConnection",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"containerName": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
 		}
 	]
 }

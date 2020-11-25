@@ -115,11 +115,11 @@
 											"type": "Expression"
 										},
 										"folder": {
-											"value": "@activity('Prepare DLS Target Info').output.folder",
+											"value": "@activity('Prepare DLS Target Info').output.path",
 											"type": "Expression"
 										},
 										"fileName": {
-											"value": "@activity('Prepare DLS Target Info').output.fileName",
+											"value": "@activity('Prepare DLS Target Info').output.blobName",
 											"type": "Expression"
 										}
 									}

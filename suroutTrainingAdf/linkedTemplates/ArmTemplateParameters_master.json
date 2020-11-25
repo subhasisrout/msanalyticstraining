@@ -8,11 +8,17 @@
 		"BlobMetadataSqlConnection_connectionString": {
 			"value": ""
 		},
+		"OrganizedDLSConnection_accountKey": {
+			"value": ""
+		},
 		"trainingKVConnection_properties_typeProperties_baseUrl": {
 			"value": "https://surouttrainingkv.vault.azure.net/"
 		},
 		"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
 			"value": "https://dlstargetprovider.azurewebsites.net"
+		},
+		"OrganizedDLSConnection_properties_typeProperties_url": {
+			"value": "https://surouttrainingdls.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""

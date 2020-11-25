@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'BlobMetadataSqlConnection'"
 		},
+		"OrganizedDLSConnection_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'OrganizedDLSConnection'"
+		},
 		"trainingKVConnection_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://surouttrainingkv.vault.azure.net/"
@@ -18,6 +22,10 @@
 		"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://dlstargetprovider.azurewebsites.net"
+		},
+		"OrganizedDLSConnection_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://surouttrainingdls.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -46,11 +54,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"OrganizedDLSConnection_accountKey": {
+						"value": "[parameters('OrganizedDLSConnection_accountKey')]"
+					},
 					"BlobMetadataSqlConnection_connectionString": {
 						"value": "[parameters('BlobMetadataSqlConnection_connectionString')]"
 					},
 					"trainingKVConnection_properties_typeProperties_baseUrl": {
 						"value": "[parameters('trainingKVConnection_properties_typeProperties_baseUrl')]"
+					},
+					"OrganizedDLSConnection_properties_typeProperties_url": {
+						"value": "[parameters('OrganizedDLSConnection_properties_typeProperties_url')]"
 					},
 					"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('DLSTargetProviderFunction_properties_typeProperties_functionAppUrl')]"

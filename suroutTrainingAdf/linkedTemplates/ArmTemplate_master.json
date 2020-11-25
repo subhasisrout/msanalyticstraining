@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "https://surouttrainingkv.vault.azure.net/"
 		},
+		"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://dlstargetprovider.azurewebsites.net"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +51,9 @@
 					},
 					"trainingKVConnection_properties_typeProperties_baseUrl": {
 						"value": "[parameters('trainingKVConnection_properties_typeProperties_baseUrl')]"
+					},
+					"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('DLSTargetProviderFunction_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},

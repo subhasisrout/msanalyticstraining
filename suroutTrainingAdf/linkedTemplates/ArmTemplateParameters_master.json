@@ -11,6 +11,9 @@
 		"trainingKVConnection_properties_typeProperties_baseUrl": {
 			"value": "https://surouttrainingkv.vault.azure.net/"
 		},
+		"DLSTargetProviderFunction_properties_typeProperties_functionAppUrl": {
+			"value": "https://dlstargetprovider.azurewebsites.net"
+		},
 		"containerUri": {
 			"value": ""
 		},

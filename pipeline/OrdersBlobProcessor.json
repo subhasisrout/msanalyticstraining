@@ -29,7 +29,7 @@
 				}
 			},
 			{
-				"name": "Load processable blobs",
+				"name": "Iterate processable blobs",
 				"type": "ForEach",
 				"dependsOn": [
 					{

@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureFunction",
 		"typeProperties": {
-			"functionAppUrl": "https://dlstargetprovider.azurewebsites.net/api/DLSTargetProviderFunction",
+			"functionAppUrl": "https://dlstargetprovider.azurewebsites.net",
 			"functionKey": {
 				"type": "AzureKeyVaultSecret",
 				"store": {

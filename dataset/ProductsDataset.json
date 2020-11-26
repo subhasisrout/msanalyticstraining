@@ -1,0 +1,39 @@
+{
+	"name": "ProductsDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OrganizedDLSConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "products.json",
+				"folderPath": "master-data",
+				"fileSystem": "organized-data"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"productid": {
+					"type": "integer"
+				},
+				"title": {
+					"type": "string"
+				},
+				"unitsinstock": {
+					"type": "integer"
+				},
+				"unitprice": {
+					"type": "integer"
+				},
+				"itemdiscount": {
+					"type": "integer"
+				}
+			}
+		}
+	}
+}

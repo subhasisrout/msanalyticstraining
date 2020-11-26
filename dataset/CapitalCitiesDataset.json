@@ -1,0 +1,30 @@
+{
+	"name": "CapitalCitiesDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobMetadataSqlConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CityId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CityName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Region",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CapitalCities"
+		}
+	}
+}

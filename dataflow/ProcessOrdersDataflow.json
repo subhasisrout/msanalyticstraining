@@ -14,7 +14,7 @@
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> OrdersInputSource"
+			"script": "source(output(\n\t\torderid as integer,\n\t\torderdate as string,\n\t\tcustomer as integer,\n\t\tproduct as integer,\n\t\tunits as integer,\n\t\tbillingaddress as string,\n\t\tremarks as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> OrdersInputSource"
 		}
 	}
 }
